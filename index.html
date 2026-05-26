@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gary Michała — Catering</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @font-face {
+    font-family: 'Findel';
+    src: url('Findel-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  .font-findel {
+    font-family: 'Findel', serif;
+    text-transform: uppercase;
+  }
+  :root {
+    --red: #E8352A;
+    --red-dark: #c42a20;
+    --green: #3a8a55;
+    --green-light: #4caf6e;
+    --dark: #1a0a08;
+    --cream: #FAF7F2;
+    --warm: #F0EAE0;
+    --text: #2e2b27;
+    --muted: #7a756e;
+    --bg: #f5f0eb;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); overflow-x: clip; }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(26,10,8,0);
+    transition: background 0.3s, padding 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(26,10,8,0.96);
+    padding: 0.85rem 4rem;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--red); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: #c5b5ae; font-size: 0.78rem; text-decoration: none; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--red); }
+  .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .nav-burger span { width: 24px; height: 2px; background: #c5b5ae; display: block; transition: all 0.3s; }
+
+  /* HERO */
+.hero {
+  position: relative;
+  height: 350vh; /* wydłużamy wysokość sekcji, aby scroll trwał dłużej */
+  background: transparent;
+}
+
+.hero-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.hero-sticky canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(0.85);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1rem 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: opacity, transform;
+}
+
+.hero-content h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #e67e22;
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+  /* BUTTONS */
+  .btn-red {
+    display: inline-block; padding: 0.85rem 2.2rem;
+    background: var(--red); color: #fff; border: none;
+    font-family: 'Lato', sans-serif; font-size: 0.75rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: pointer; text-decoration: none; transition: background 0.2s;
+  }
+  .btn-red:hover { background: var(--red-dark); }
+  .btn-green {
+    display: inline-block; padding: 0.85rem 2.2rem;
+    background: transparent; color: var(--green-light);
+    border: 1.5px solid var(--green-light);
+    font-family: 'Lato', sans-serif; font-size: 0.75rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: pointer; text-decoration: none; transition: all 0.2s;
+  }
+  .btn-green:hover { background: var(--green-light); color: #fff; }
+
+  /* SECTIONS */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-tag { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--red); margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+  .section-lead { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.85; }
+  .red-line { width: 48px; height: 3px; background: var(--red); margin: 1.25rem 0; }
+
+  /* ABOUT */
+  .about { background: var(--warm); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-img-box {
+    background: var(--dark); height: 420px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-img-box::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 55%; height: 55%; border-right: 3px solid var(--red); border-bottom: 3px solid var(--red);
+  }
+  .about-img-box::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 30%; height: 30%; border-left: 3px solid var(--green); border-top: 3px solid var(--green);
+  }
+  .about-img-inner { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .about-badge-svg { width: 120px; height: 120px; opacity: 0.85; }
+
+  /* SERVICES */
+  .services { background: var(--cream); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .service-card {
+    background: #fff; padding: 2rem 1.75rem;
+    border-bottom: 4px solid var(--red);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .service-card:nth-child(even) { border-bottom-color: var(--green); }
+  .service-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(0,0,0,0.08); }
+  .service-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.75rem; font-weight: 700; }
+  .service-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+
+  /* MENU */
+  .menu-section { background: var(--dark); color: var(--cream); }
+  .menu-section .section-title { color: var(--cream); }
+  .menu-section .section-lead { color: #a09890; }
+  .menu-tabs { display: flex; margin: 2.5rem 0 0; border-bottom: 1px solid #3a2820; flex-wrap: wrap; }
+  .tab {
+    padding: 0.75rem 1.75rem; font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase; cursor: pointer; color: #a09890;
+    border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    background: none; font-family: 'Lato', sans-serif; transition: all 0.2s;
+  }
+  .tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .tab:hover { color: var(--cream); }
+  .menu-panel { display: none; padding-top: 1.5rem; }
+  .menu-panel.active { display: block; }
+  .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .menu-item {
+    padding: 1.5rem; background: #221810;
+    display: grid; grid-template-columns: 100px 1fr auto; gap: 1.5rem; align-items: center;
+    transition: background 0.15s;
+  }
+  .menu-item img {
+    width: 100px; height: 100px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    cursor: pointer; transition: transform 0.2s;
+  }
+  .menu-item img:hover { transform: scale(1.05); }
+  .menu-item:hover { background: #2e1f15; }
+  .menu-item-name { font-size: 1.1rem; color: var(--cream); }
+  .menu-item-desc { font-size: 0.85rem; color: #7a6a62; margin-top: 0.3rem; }
+  .menu-action { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+  .menu-price { color: var(--red); font-size: 1.1rem; font-weight: 700; white-space: nowrap; margin-left: 0; }
+  .add-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.65rem; cursor: pointer; transition: all 0.2s; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;}
+  .add-btn:hover { background: var(--red); color: #fff; transform: translateY(-2px); }
+  
+  /* MODAL */
+  .image-modal {
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.85); padding-top: 60px; backdrop-filter: blur(5px);
+  }
+  .image-modal-content {
+    margin: auto; display: block; max-width: 90%; max-height: 80vh; border-radius: 8px;
+    animation: zoom 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  @keyframes zoom { from {transform:scale(0)} to {transform:scale(1)} }
+  .image-modal-close {
+    position: absolute; top: 25px; right: 40px; color: #f1f1f1; font-size: 40px; font-weight: bold;
+    transition: 0.3s; cursor: pointer;
+  }
+  .image-modal-close:hover, .image-modal-close:focus { color: var(--red); text-decoration: none; cursor: pointer; }
+  #image-modal-caption {
+    margin: auto; display: block; width: 80%; max-width: 700px; text-align: center; color: var(--cream);
+    padding: 15px 0; font-family: 'Playfair Display', serif; font-size: 1.5rem;
+  }
+
+  /* STATS */
+  .stats { background: var(--red); }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 700; color: #fff; }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 0.5rem; }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--warm); }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .testi-card { background: #fff; padding: 2rem; position: relative; border-top: 3px solid var(--green); }
+  .testi-card::before {
+    content: '\201C'; font-family: 'Playfair Display', serif; font-size: 5rem;
+    color: var(--red); position: absolute; top: -1rem; left: 1.5rem; line-height: 1; opacity: 0.25;
+  }
+  .testi-text { font-size: 0.92rem; line-height: 1.85; color: var(--text); margin-bottom: 1.25rem; padding-top: 1.5rem; font-style: italic; }
+  .testi-name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; color: var(--text); }
+  .testi-event { font-size: 0.72rem; color: var(--green); margin-top: 0.2rem; }
+
+  /* CONTACT */
+  .contact-section { background: var(--dark); color: var(--cream); }
+  .contact-section .section-title { color: var(--cream); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; }
+  .contact-info p { font-size: 0.92rem; color: #a09890; line-height: 2.1; }
+  .contact-info strong {
+    color: var(--red); display: block; font-size: 0.65rem;
+    letter-spacing: 0.22em; text-transform: uppercase; margin-top: 1.5rem; margin-bottom: 0.25rem;
+  }
+  .contact-form { display: flex; flex-direction: column; gap: 0.85rem; }
+  .contact-form input, .contact-form textarea, .contact-form select {
+    background: #2a1610; border: 1px solid #3a2820; color: var(--cream);
+    padding: 0.85rem 1rem; font-family: 'Lato', sans-serif;
+    font-size: 0.9rem; outline: none; width: 100%; transition: border-color 0.2s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: var(--red); }
+  .contact-form select option { background: #2a1610; }
+  .contact-form textarea { height: 120px; resize: vertical; }
+
+  /* FOOTER */
+  footer {
+    background: #0e0604; color: #5a4540;
+    text-align: center; padding: 2.5rem;
+    font-size: 0.78rem; letter-spacing: 0.1em;
+  }
+  footer .f-red { color: var(--red); }
+  footer .f-green { color: var(--green-light); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.75rem 1.5rem; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(26,10,8,0.98); flex-direction: column; gap: 0; padding: 1rem 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 0.75rem 2rem; display: block; }
+    .nav-burger { display: flex; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .hero-content { margin-top: 150px; }
+    .hero-badge { width: 100px; height: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" style="display: flex; align-items: center; gap: 0.8rem;">
+    <img src="logo.png" alt="Logo" style="height: 50px; display: block;">
+    <span class="font-findel" style="color: #c5b5ae; font-size: 1.2rem; letter-spacing: 0.08em; margin-top: 3px;">Gary Michała</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMenu()">O nas</a></li>
+    <li><a href="#services" onclick="closeMenu()">Usługi</a></li>
+    <li><a href="#menu" onclick="closeMenu()">Menu</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Kontakt</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="hero">
+  <div class="hero-sticky">
+    <canvas id="heroCanvas" width="1920" height="1071"></canvas>
+
+    <div class="hero-content">
+      <h1>Profesjonalny catering · Otwock</h1>
+      <p>Świeże składniki · Każda okazja · Niezapomniane smaki</p>
+      <a href="#menu" class="btn-primary">Zobacz ofertę</a>
+    </div>
+  </div>
+</header>
+
+
+
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-box">
+        <div class="about-img-inner">
+          <svg class="about-badge-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,4 72,20 92,12 96,34 118,38 108,56 118,74 96,78 92,100 72,92 60,108 48,92 28,100 24,78 2,74 12,56 2,38 24,34 28,12 48,20" fill="#3a8a55" opacity="0.8"/>
+            <polygon points="60,14 70,28 87,21 90,40 110,44 101,60 110,76 90,80 87,99 70,92 60,106 50,92 33,99 30,80 10,76 19,60 10,44 30,40 33,21 50,28" fill="#E8352A" opacity="0.9"/>
+            <circle cx="60" cy="60" r="28" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
+            <text x="60" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white" font-weight="700">GARY</text>
+            <text x="60" y="65" text-anchor="middle" font-family="Playfair Display,serif" font-size="9" fill="white" font-weight="700">MICHAŁA</text>
+            <text x="60" y="76" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#a8e6ba" letter-spacing="2">CATERING</text>
+          </svg>
+          <p style="color:#5a4540;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase">Twoje zdjęcie tutaj</p>
+        </div>
+      </div>
+      <div>
+        <p class="section-tag">Nasza historia</p>
+        <h2 class="section-title">Pasja do gotowania<br>od ponad 15 lat</h2>
+        <div class="red-line"></div>
+        <p class="section-lead"><span class="font-findel">Gary Michała</span> to catering z duszą — tworzymy menu szyte na miarę, od kameralnych uroczystości rodzinnych po eleganckie przyjęcia biznesowe. Każde danie to wyraz naszej pasji i dbałości o najwyższą jakość składników.</p>
+        <p style="margin-top:1.25rem;font-size:0.92rem;color:var(--muted);line-height:1.85;">Współpracujemy z lokalnymi dostawcami, by zapewnić świeżość i sezonowość każdego posiłku. Twoje wydarzenie zasługuje na coś wyjątkowego.</p>
+        <div style="margin-top:2rem;display:flex;gap:2rem;flex-wrap:wrap;">
+          <div>
+            <div class="animate-number" data-target="15" data-suffix="+" style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--red)">0+</div>
+            <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Lat doświadczenia</div>
+          </div>
+          <div>
+            <div class="animate-number" data-target="1200" data-suffix="+" style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--green)">0+</div>
+            <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Wydarzeń</div>
+          </div>
+          <div>
+            <div class="animate-number" data-target="300" data-suffix="+" style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--red)">0+</div>
+            <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Klientów</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <p class="section-tag">Co oferujemy</p>
+    <h2 class="section-title">Nasze usługi</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">💍</div>
+        <h3>Wesela & uroczystości</h3>
+        <p>Kompleksowa obsługa wesel, chrzcin i jubileuszy. Menu dopasowane do Twoich marzeń i budżetu.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💼</div>
+        <h3>Catering biznesowy</h3>
+        <p>Lunche firmowe, konferencje i bankiety. Profesjonalna obsługa, punktualność i elegancja.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎉</div>
+        <h3>Przyjęcia prywatne</h3>
+        <p>Urodziny, rocznice, imprezy domowe – małe i duże. Gotujemy z serca dla Twoich gości.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🍱</div>
+        <h3>Dostawa lunchboxów</h3>
+        <p>Codzienne zestawy obiadowe dla firm i instytucji. Smacznie, zdrowo i wygodnie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <p class="section-tag">Nasze specjalności</p>
+    <h2 class="section-title">Menu</h2>
+    <p class="section-lead">Wybierz kategorię i poznaj nasze propozycje. Ceny ustalamy indywidualnie pod każde wydarzenie.</p>
+    <div class="menu-tabs">
+      <button class="tab active" onclick="switchTab('przystawki', this)">Przystawki</button>
+      <button class="tab" onclick="switchTab('dania', this)">Dania główne</button>
+      <button class="tab" onclick="switchTab('desery', this)">Desery</button>
+    </div>
+    <div id="przystawki" class="menu-panel active">
+      <div class="menu-grid">
+        <div class="menu-item"><img src="assets/images/przystawka_catering_1779793365395.png" alt="Tatar"><div><div class="menu-item-name">Tatar z łososia</div><div class="menu-item-desc">awokado, kapar, koper</div></div><div class="menu-action"><span class="menu-price">od 24 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/bruschetta_1779793768805.png" alt="Bruschetta"><div><div class="menu-item-name">Bruschetta trio</div><div class="menu-item-desc">pomidor, pesto, ricotta</div></div><div class="menu-action"><span class="menu-price">od 16 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/zupa_dynia_1779793782610.png" alt="Zupa krem"><div><div class="menu-item-name">Zupa krem z dyni</div><div class="menu-item-desc">pestki, śmietana, imbir</div></div><div class="menu-action"><span class="menu-price">od 18 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/carpaccio_burak_1779793795414.png" alt="Carpaccio"><div><div class="menu-item-name">Carpaccio z buraka</div><div class="menu-item-desc">kozi ser, orzechy, rukola</div></div><div class="menu-action"><span class="menu-price">od 20 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/roladki_cukinia_1779793808537.png" alt="Roladki"><div><div class="menu-item-name">Roladki z cukinii</div><div class="menu-item-desc">ricotta, bazylia, suszone pomidory</div></div><div class="menu-action"><span class="menu-price">od 22 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/sledz_staropolsku_1779793822685.png" alt="Śledź"><div><div class="menu-item-name">Śledź po staropolsku</div><div class="menu-item-desc">cebula, jabłko, olej lniany</div></div><div class="menu-action"><span class="menu-price">od 19 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+      </div>
+    </div>
+    <div id="dania" class="menu-panel">
+      <div class="menu-grid">
+        <div class="menu-item"><img src="assets/images/danie_glowne_catering_1779793378746.png" alt="Polędwica"><div><div class="menu-item-name">Polędwica wołowa</div><div class="menu-item-desc">sos truflowy, puree ziemniaczane</div></div><div class="menu-action"><span class="menu-price">od 85 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/kaczka_pomarancze_1779793850627.png" alt="Kaczka"><div><div class="menu-item-name">Kaczka w pomarańczach</div><div class="menu-item-desc">kapusta czerwona, kluski śląskie</div></div><div class="menu-action"><span class="menu-price">od 68 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/losos_pieczony_1779793864984.png" alt="Łosoś"><div><div class="menu-item-name">Łosoś pieczony</div><div class="menu-item-desc">szparagi, sos cytrynowy, koper</div></div><div class="menu-action"><span class="menu-price">od 72 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/risotto_grzyby_1779793880236.png" alt="Risotto"><div><div class="menu-item-name">Risotto z grzybami</div><div class="menu-item-desc">parmezan, tymianek, masło</div></div><div class="menu-action"><span class="menu-price">od 55 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/schab_faszerowany_1779793893078.png" alt="Schab"><div><div class="menu-item-name">Schab faszerowany</div><div class="menu-item-desc">śliwka, szpinak, sos żurawinowy</div></div><div class="menu-action"><span class="menu-price">od 58 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/piers_kurczak_1779793907236.png" alt="Pierś"><div><div class="menu-item-name">Pierś z kurczaka</div><div class="menu-item-desc">sos kremowy, warzywa sezonowe</div></div><div class="menu-action"><span class="menu-price">od 48 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+      </div>
+    </div>
+    <div id="desery" class="menu-panel">
+      <div class="menu-grid">
+        <div class="menu-item"><img src="assets/images/szarlotka_1779794524083.png" alt="Szarlotka"><div><div class="menu-item-name">Szarlotka z lodami</div><div class="menu-item-desc">na ciepło, lody waniliowe</div></div><div class="menu-action"><span class="menu-price">od 20 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/deser_catering_1779793391865.png" alt="Panna cotta"><div><div class="menu-item-name">Panna cotta</div><div class="menu-item-desc">coulis malinowy, mięta</div></div><div class="menu-action"><span class="menu-price">od 18 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/mini_desery_1779793953881.png" alt="Mini desery"><div><div class="menu-item-name">Mini desery (6 szt.)</div><div class="menu-item-desc">sezonowe smaki, elegancka prezentacja</div></div><div class="menu-action"><span class="menu-price">od 45 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+        <div class="menu-item"><img src="assets/images/tiramisu_1779793968731.png" alt="Tiramisu"><div><div class="menu-item-name">Tiramisu klasyczne</div><div class="menu-item-desc">mascarpone, espresso, kakao</div></div><div class="menu-action"><span class="menu-price">od 22 zł</span><button class="add-btn">Dodaj do zamówienia</button></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;">
+      <a href="#contact" class="btn-red">Zamów indywidualne menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div><div class="stat-num animate-number" data-target="15" data-suffix="+">0+</div><div class="stat-label">Lat doświadczenia</div></div>
+      <div><div class="stat-num animate-number" data-target="1200" data-suffix="+">0+</div><div class="stat-label">Obsłużonych wydarzeń</div></div>
+      <div><div class="stat-num animate-number" data-target="300" data-suffix="+">0+</div><div class="stat-label">Zadowolonych klientów</div></div>
+      <div><div class="stat-num animate-number" data-target="50" data-suffix="+">0+</div><div class="stat-label">Dań w menu</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <p class="section-tag">Opinie</p>
+    <h2 class="section-title">Co mówią nasi klienci</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p class="testi-text">Catering na naszym weselu był perfekcyjny. Goście do dziś wspominają te smaki. Profesjonalizm i ciepłe podejście na każdym kroku.</p>
+        <div class="testi-name">Marta & Tomasz W.</div>
+        <div class="testi-event">Wesele, Warszawa 2024</div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">Od roku korzystamy z lunchboxów dla naszego biura. Smacznie, terminowo i w rozsądnej cenie. Polecamy każdej firmie!</p>
+        <div class="testi-name">Agnieszka K.</div>
+        <div class="testi-event">Klient biznesowy, Otwock</div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">Urodziny mojej mamy były nie do zapomnienia. Menu dopasowane do potrzeb i gustu — każdy znalazł coś dla siebie.</p>
+        <div class="testi-name">Piotr N.</div>
+        <div class="testi-event">Przyjęcie prywatne 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <p class="section-tag">Skontaktuj się</p>
+    <h2 class="section-title">Zapytaj o wycenę</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="section-lead" style="color:#a09890">Chętnie odpowiemy na wszystkie pytania i przygotujemy ofertę dopasowaną do Twojego wydarzenia.</p>
+        <strong>Telefon</strong>
+        <p>+48 123 456 789</p>
+        <strong>E-mail</strong>
+        <p>kontakt@garymichala.pl</p>
+        <strong>Adres</strong>
+        <p>ul. Przykładowa 12<br>05-400 Otwock</p>
+        <strong>Godziny kontaktu</strong>
+        <p>Pon–Pt: 9:00 – 18:00<br>Sob: 10:00 – 14:00</p>
+      </div>
+      <div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <input type="text" placeholder="Imię i nazwisko" required />
+          <input type="email" placeholder="Adres e-mail" required />
+          <input type="tel" placeholder="Numer telefonu" />
+          <select required>
+            <option value="" disabled selected>Rodzaj wydarzenia</option>
+            <option>Wesele</option>
+            <option>Przyjęcie prywatne</option>
+            <option>Event firmowy</option>
+            <option>Catering dzienny / lunchboxy</option>
+            <option>Inne</option>
+          </select>
+          <input type="text" placeholder="Liczba gości (orientacyjnie)" />
+          <textarea placeholder="Opisz swoje wydarzenie — termin, oczekiwania, pytania…"></textarea>
+          <button type="submit" class="btn-red" style="border:none;cursor:pointer;align-self:flex-start;">Wyślij zapytanie</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:1rem; display:flex; justify-content:center;">
+    <img src="logo.png" alt="Gary Michała Logo" style="height: 65px; opacity: 0.85;">
+  </div>
+  <p>&copy; 2025 <span class="f-red font-findel">Gary Michała</span> — <span class="f-green">Catering z pasją</span>. Wszelkie prawa zastrzeżone.</p>
+  <p style="margin-top:0.5rem;font-size:0.7rem;">Otwock · +48 123 456 789 · kontakt@garymichala.pl</p>
+</footer>
+
+<script>
+/* ── Navbar ── */
+const navbar  = document.getElementById('navbar');
+
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  navbar.classList.toggle('scrolled', sy > 40);
+}, { passive: true });
+
+/* ── Mobile menu ── */
+function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+function closeMenu()  { document.getElementById('navLinks').classList.remove('open'); }
+
+/* ── Menu tabs ── */
+function switchTab(id, el) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+/* ── Form submit ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.textContent = 'Wysłano! Odezwiemy się wkrótce ✓';
+  btn.style.background = '#3a8a55';
+  btn.disabled = true;
+}
+
+/* ── Hero canvas particles ── */
+/*const canvas = document.getElementById('heroCanvas');
+const ctx    = canvas.getContext('2d');
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize, { passive: true });
+
+const pts = Array.from({ length: 55 }, () => ({
+  x:  Math.random(), y: Math.random(),
+  r:  Math.random() * 2 + 0.5,
+  sp: Math.random() * 0.25 + 0.08,
+  op: Math.random() * 0.4 + 0.1,
+  c:  Math.random() > 0.5 ? [232,53,42] : [58,138,85],
+  ph: Math.random() * Math.PI * 2,
+  dx: (Math.random() - 0.5) * 40
+}));
+
+let t0 = null;
+(function draw(ts) {
+  if (!t0) t0 = ts;
+  const e = (ts - t0) / 1000;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  pts.forEach(p => {
+    const yF  = 1 - ((p.y + e * p.sp * 0.07) % 1);
+    const yP  = yF * canvas.height;
+    const xP  = p.x * canvas.width + Math.sin(e * 0.3 + p.ph) * p.dx;
+    const fade = Math.min(1, e / 2);
+    ctx.beginPath();
+    ctx.arc(xP, yP, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.op * fade})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+})(0);*/
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const canvas = document.getElementById("heroCanvas");
+    const hero = document.getElementById("hero");
+    if (!canvas || !hero) return;
+
+    const ctx = canvas.getContext("2d");
+    const frameCount = 141; // 141 klatek 
+    const images = [];
+
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image();
+      img.src = `frames/frame_${i.toString().padStart(4, '0')}.jpg`;
+      images.push(img);
+    }
+
+    images[0].addEventListener('load', () => {
+      ctx.drawImage(images[0], 0, 0, canvas.width, canvas.height);
+    });
+
+    const onScroll = () => {
+      const rect = hero.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const scrollableDistance = rect.height - windowHeight;
+      
+      let progress = 0;
+      if (scrollableDistance > 0) {
+        progress = -rect.top / scrollableDistance;
+      }
+      
+      progress = Math.min(Math.max(progress, 0), 1);
+      const frameIndex = Math.floor(progress * (frameCount - 1));
+      
+      let contentOpacity = 0;
+      let contentTranslateY = 30;
+
+      if (progress > 0.1) {
+        let contentProgress = (progress - 0.1) / 0.3; // animacja od 10% do 40% scrolla
+        contentProgress = Math.min(Math.max(contentProgress, 0), 1);
+        contentOpacity = contentProgress;
+        contentTranslateY = 30 * (1 - contentProgress);
+      }
+      
+      window.requestAnimationFrame(() => {
+        if (images[frameIndex] && images[frameIndex].complete) {
+          ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
+        }
+        
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+          heroContent.style.opacity = contentOpacity;
+          heroContent.style.transform = `translateY(${contentTranslateY}px)`;
+        }
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // wywołanie na starcie
+    onScroll();
+
+    // Animacja liczników
+    const counters = document.querySelectorAll('.animate-number');
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = +entry.target.getAttribute('data-target');
+          const suffix = entry.target.getAttribute('data-suffix') || '';
+          let current = 0;
+          const increment = target / 60; // szybkie nabijanie w 60 klatkach (ok 1 sekunda)
+          
+          const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+              entry.target.innerText = Math.ceil(current) + suffix;
+              requestAnimationFrame(updateCounter);
+            } else {
+              entry.target.innerText = target + suffix;
+            }
+          };
+          
+          updateCounter();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 }); // uruchom gdy połowa elementu będzie widoczna na ekranie
+
+    counters.forEach(counter => counterObserver.observe(counter));
+  });
+
+</script>
+
+  <!-- Image Modal -->
+  <div id="image-modal" class="image-modal">
+    <span class="image-modal-close">&times;</span>
+    <img class="image-modal-content" id="modal-img">
+    <div id="image-modal-caption"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const modal = document.getElementById("image-modal");
+      const modalImg = document.getElementById("modal-img");
+      const captionText = document.getElementById("image-modal-caption");
+      const closeBtn = document.querySelector(".image-modal-close");
+
+      document.querySelectorAll('.menu-item img').forEach(img => {
+        img.addEventListener('click', function() {
+          modal.style.display = "block";
+          modalImg.src = this.src;
+          captionText.innerHTML = this.alt;
+          document.body.style.overflow = "hidden"; // Blokuj przewijanie tła
+        });
+      });
+
+      closeBtn.onclick = function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+      }
+      modal.onclick = function(e) {
+        if(e.target === modal) {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto";
+        }
+      }
+    });
+  </script>
+<style>
+  /* KOSZYK CSS */
+  .fab-cart {
+    position: fixed; bottom: 30px; right: 30px; z-index: 900;
+    background: var(--red); color: #fff; width: 60px; height: 60px;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.2s;
+  }
+  .fab-cart:hover { transform: scale(1.1); }
+  .fab-cart svg { width: 24px; height: 24px; fill: currentColor; }
+  .cart-badge {
+    position: absolute; top: 0; right: 0; background: #fff; color: var(--red);
+    font-size: 0.75rem; font-weight: bold; width: 20px; height: 20px;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+  }
+  .cart-panel {
+    position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh;
+    background: #1a120c; z-index: 1001; box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+    transition: right 0.3s ease; display: flex; flex-direction: column;
+    color: var(--cream); font-family: 'Lato', sans-serif;
+  }
+  .cart-panel.open { right: 0; }
+  .cart-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem; border-bottom: 1px solid #3a2820;
+  }
+  .cart-header h2 { font-family: 'Playfair Display', serif; margin: 0; font-size: 1.5rem; }
+  .cart-close { background: none; border: none; color: var(--cream); font-size: 2rem; cursor: pointer; }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; }
+  .cart-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
+  .cart-item-details { flex: 1; }
+  .cart-item-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .cart-item-price { color: var(--red); font-size: 0.85rem; font-weight: bold; }
+  .cart-item-controls { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+  .cart-btn { background: #2e1f15; border: 1px solid #3a2820; color: #fff; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+  .cart-btn:hover { background: var(--red); border-color: var(--red); }
+  .cart-qty { font-size: 0.85rem; width: 20px; text-align: center; }
+  .cart-footer { padding: 1.5rem; border-top: 1px solid #3a2820; background: #221810; }
+  .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .cart-total span:last-child { color: var(--red); }
+  .cart-disclaimer { font-size: 0.7rem; color: #7a6a62; margin-bottom: 1rem; text-align: center; }
+  .checkout-btn { width: 100%; display: block; text-align: center; box-sizing: border-box; }
+  .cart-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000; display: none; backdrop-filter: blur(2px);
+  }
+  .cart-overlay.open { display: block; }
+</style>
+
+<!-- Wirtualny Koszyk HTML -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="fab-cart" id="fab-cart">
+  <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+  <div class="cart-badge" id="cart-badge">0</div>
+</div>
+
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h2>Zamówienie</h2>
+    <button class="cart-close" id="cart-close">&times;</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <!-- Items injected here -->
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Suma szacunkowa:</span>
+      <span id="cart-total-price">0 zł</span>
+    </div>
+    <p class="cart-disclaimer">*Ceny są orientacyjne. Ostateczny koszt ustalany jest po kontakcie.</p>
+    <a href="#contact" class="btn-red checkout-btn" id="checkout-btn">Złóż zamówienie</a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let cart = [];
+    const fabCart = document.getElementById('fab-cart');
+    const cartPanel = document.getElementById('cart-panel');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartClose = document.getElementById('cart-close');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartBadge = document.getElementById('cart-badge');
+    const cartTotalPrice = document.getElementById('cart-total-price');
+
+    // Otwieranie / Zamykanie koszyka
+    function toggleCart() {
+      cartPanel.classList.toggle('open');
+      cartOverlay.classList.toggle('open');
+      document.body.style.overflow = cartPanel.classList.contains('open') ? 'hidden' : 'auto';
+    }
+    fabCart.addEventListener('click', toggleCart);
+    cartClose.addEventListener('click', toggleCart);
+    cartOverlay.addEventListener('click', toggleCart);
+    checkoutBtn.addEventListener('click', () => { toggleCart(); });
+
+    // Renderowanie koszyka
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      let total = 0;
+      let count = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${item.price} zł</div>
+            <div class="cart-item-controls">
+              <button class="cart-btn minus-btn" data-index="${index}">-</button>
+              <span class="cart-qty">${item.quantity}</span>
+              <button class="cart-btn plus-btn" data-index="${index}">+</button>
+            </div>
+          </div>
+        `;
+        cartItemsContainer.appendChild(el);
+      });
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p style="text-align:center; color:#7a6a62; margin-top:2rem;">Twój koszyk jest pusty.</p>';
+      }
+
+      cartBadge.innerText = count;
+      cartTotalPrice.innerText = total + ' zł';
+
+      // Przypięcie zdarzeń do przycisków
+      document.querySelectorAll('.minus-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const idx = this.getAttribute('data-index');
+          if (cart[idx].quantity > 1) {
+            cart[idx].quantity--;
+          } else {
+            cart.splice(idx, 1);
+          }
+          renderCart();
+        });
+      });
+
+      document.querySelectorAll('.plus-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const idx = this.getAttribute('data-index');
+          cart[idx].quantity++;
+          renderCart();
+        });
+      });
+
+      // Aktualizacja stanów przycisków w menu
+      document.querySelectorAll('.add-btn').forEach(btn => {
+        const menuItem = btn.closest('.menu-item');
+        const name = menuItem.querySelector('.menu-item-name').innerText;
+        const inCart = cart.find(item => item.name === name);
+        if (inCart) {
+          btn.innerText = 'Dodano!';
+          btn.style.background = 'var(--green)';
+          btn.style.borderColor = 'var(--green)';
+          btn.style.color = '#fff';
+        } else {
+          btn.innerText = 'Dodaj do zamówienia';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }
+      });
+    }
+
+    // Dodawanie do koszyka
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation(); 
+        const menuItem = this.closest('.menu-item');
+        const name = menuItem.querySelector('.menu-item-name').innerText;
+        const img = menuItem.querySelector('img').src;
+        const priceText = menuItem.querySelector('.menu-price').innerText;
+        const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
+
+        const existing = cart.find(item => item.name === name);
+        if (existing) {
+          existing.quantity++;
+        } else {
+          cart.push({ name, img, price, quantity: 1 });
+        }
+        renderCart();
+      });
+    });
+
+    renderCart();
+  });
+</script>
+</body>
+</html>
