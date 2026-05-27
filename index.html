@@ -47,10 +47,11 @@
   }
   .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--red); letter-spacing: 0.04em; text-decoration: none; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a { color: #c5b5ae; font-size: 0.78rem; text-decoration: none; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a { color: #f4e9e9; font-size: 0.78rem; text-decoration: none; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; }
   .nav-links a:hover { color: var(--red); }
   .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-  .nav-burger span { width: 24px; height: 2px; background: #c5b5ae; display: block; transition: all 0.3s; }
+  .nav-burger span { width: 24px; height: 2px; background: #f4e9e9; display: block; transition: all 0.3s; }
+  .nav-logo .font-findel { color: #f4e9e9 !important; text-shadow: 1px 1px 3px rgba(90, 69, 64, 0.6); }
 
   /* HERO */
 .hero {
@@ -298,7 +299,7 @@
 <nav id="navbar">
   <a href="#" class="nav-logo" style="display: flex; align-items: center; gap: 0.8rem;">
     <img src="logo.png" alt="Logo" style="height: 50px; display: block;">
-    <span class="font-findel" style="color: #c5b5ae; font-size: 1.2rem; letter-spacing: 0.08em; margin-top: 3px;">Gary Michała</span>
+    <span class="font-findel" style="color: #f4e9e9; font-size: 1.2rem; letter-spacing: 0.08em; margin-top: 3px; transition: color 0.3s;">Gary Michała</span>
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#about" onclick="closeMenu()">O nas</a></li>
@@ -332,17 +333,7 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-img-box">
-        <div class="about-img-inner">
-          <svg class="about-badge-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="60,4 72,20 92,12 96,34 118,38 108,56 118,74 96,78 92,100 72,92 60,108 48,92 28,100 24,78 2,74 12,56 2,38 24,34 28,12 48,20" fill="#3a8a55" opacity="0.8"/>
-            <polygon points="60,14 70,28 87,21 90,40 110,44 101,60 110,76 90,80 87,99 70,92 60,106 50,92 33,99 30,80 10,76 19,60 10,44 30,40 33,21 50,28" fill="#E8352A" opacity="0.9"/>
-            <circle cx="60" cy="60" r="28" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
-            <text x="60" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white" font-weight="700">GARY</text>
-            <text x="60" y="65" text-anchor="middle" font-family="Playfair Display,serif" font-size="9" fill="white" font-weight="700">MICHAŁA</text>
-            <text x="60" y="76" text-anchor="middle" font-family="Lato,sans-serif" font-size="6" fill="#a8e6ba" letter-spacing="2">CATERING</text>
-          </svg>
-          <p style="color:#5a4540;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase">Twoje zdjęcie tutaj</p>
-        </div>
+        <img src="assets/images/Kwiato.jpg" alt="Twórca Cateringu" style="width: 100%; height: 100%; object-fit: cover; object-position: center; position: absolute; top: 0; left: 0;">
       </div>
       <div>
         <p class="section-tag">Nasza historia</p>
@@ -535,7 +526,7 @@ const navbar  = document.getElementById('navbar');
 
 window.addEventListener('scroll', () => {
   const sy = window.scrollY;
-  navbar.classList.toggle('scrolled', sy > 40);
+  navbar.classList.toggle('scrolled', sy > 200);
 }, { passive: true });
 
 /* ── Mobile menu ── */
